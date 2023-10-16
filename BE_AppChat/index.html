@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1 id="number">1</h1>
+        <h1 id="noiDung">Nooij dung</h1>
+        <button id="btnClick">Get</button>
+        <script
+            src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+            integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+            crossorigin="anonymous"
+        ></script>
+
+        <script>
+            // the following forms are similar
+            const socket = io("http://localhost:8080");
+            // const socket = io("wss://server-domain.com");
+            // const socket = io("server-domain.com"); // only in the browser when the page is served over https (will not work in Node.js)
+
+            socket.on("socket_oke", (socketId) => {
+                document.querySelector("#noiDung").innerHTML = `da ket noi id: ${socketId}`;
+            });
+            socket.on("numberIncrease", (socketId) => {
+                let numberValue = document.querySelector("#number").innerText;
+                let result = +numberValue +  1;
+                document.querySelector("#number").innerText = result;
+            });
+
+            document.querySelector("#btnClick").addEventListener("click", () => {
+                const numberValue = document.querySelector("#number").innerText;
+                console.log(+numberValue);
+                socket.emit("numberIncrease");
+            });
+        </script>
+    </body>
+</html>
